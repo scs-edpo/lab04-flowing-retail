@@ -25,15 +25,12 @@ public class MessageListener {
     @KafkaListener(id = "email", topics = MessageSender.TOPIC_NAME)
     public void messageReceived(String messagePayloadJson, @Header("type") String messageType) throws Exception {
         if ("OrderPlacedEvent".equals(messageType)) {
-            Message<ShipGoodsCommandPayload> message = objectMapper.readValue(messagePayloadJson, new TypeReference<Message<ShipGoodsCommandPayload>>() {
-            });
+
+            //TODO: use message mapper if email should include personalized content
+            //Message<EmailCommandPayload> message = objectMapper.readValue(messagePayloadJson, new TypeReference<Message<EmailCommandPayload>>() {});
 
             //Send email to recipient of order
-            emailService.createEmail(
-                    message.getData().getPickId(),
-                    message.getData().getRecipientName(),
-                    message.getData().getRecipientAddress(),
-                    message.getData().getLogisticsProvider());
+            emailService.createEmail();
         }
     }
 
