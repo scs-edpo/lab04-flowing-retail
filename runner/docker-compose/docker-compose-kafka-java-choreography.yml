@@ -95,6 +95,19 @@ services:
     environment:
       - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
 
+  email:
+    build:
+      context: ../../kafka/java/email
+      dockerfile: Dockerfile
+    networks:
+      - flowing
+    ports:
+      - "8096:8096"
+    depends_on:
+      - kafka
+    environment:
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+
   docs:
     image: flowingretail/docs
     networks:
