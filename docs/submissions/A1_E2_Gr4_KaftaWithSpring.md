@@ -5,12 +5,12 @@
 - **Course:** Event-driven and Process-oriented Architectures FS2024
 - **Instructors:** B. Weber, R. Seiger, A. Abbad-Andaloussi]()
 
-
-## Exercise 2: Kafka with Spring
-
-### Deadline
+## Deadline
 
 - **Submission Date:** 05.03.2024; 23:59 CET
+
+# Exercise 02: Kafka with Spring
+
 
 ### Project Abstract
 

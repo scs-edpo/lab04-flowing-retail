@@ -1,4 +1,13 @@
-# E01 - Outage of Zookeeper
+# University of St.Gallen - Exercise Submission
+
+## Course Information
+
+- **Course:** Event-driven and Process-oriented Architectures FS2024
+- **Instructors:** B. Weber, R. Seiger, A. Abbad-Andaloussi]()
+
+## Deadline
+
+- **Submission Date:** 05.03.2024; 23:59 CET# E01 - Outage of Zookeeper
 
 ## E01-01: During Runtime
 
