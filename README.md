@@ -1,4 +1,12 @@
-# Flowing Retail
+# University of St.Gallen - Exercise Submission
+
+## Course Information
+
+- **Course:** Event-driven and Process-oriented Architectures FS2024
+- **Instructors:** B. Weber, R. Seiger, A. Abbad-Andaloussi
+
+
+# Flowing Retail >> Drop Shipping Group 4
 
 This sample application demonstrates a simple order fulfillment system, decomposed into multiple independent components (like _microservices_).
 
