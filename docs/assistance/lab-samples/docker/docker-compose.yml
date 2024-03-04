@@ -1,0 +1,51 @@
+version: '3'
+services:
+  zookeeper:
+    image: bitnami/zookeeper:latest
+    environment:
+      ALLOW_ANONYMOUS_LOGIN: yes
+    ports:
+      - 2181:2181
+  kafka:
+    image: bitnami/kafka:latest
+    container_name: kafka
+    ports:
+      - 9092:9092
+      - 7203:7203
+    environment:
+      #     KAFKA_ADVERTISED_HOST_NAME: 192.168.178.31
+      KAFKA_ADVERTISED_HOST_NAME: 192.168.1.113
+      KAFKA_ADVERTISED_PORT: 9092
+      ALLOW_PLAINTEXT_LISTENER: yes
+      KAFKA_CFG_LISTENERS: PLAINTEXT://:9092
+      KAFKA_CFG_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_OPTS: "-javaagent:/opt/bitnami/kafka/jmx_prometheus_javaagent-0.20.0.jar=7203:/opt/bitnami/kafka/config.yml"
+    volumes:
+      - ./jmx_prometheus_javaagent-0.20.0.jar:/opt/bitnami/kafka/jmx_prometheus_javaagent-0.20.0.jar
+      - ./config.yml:/opt/bitnami/kafka/config.yml
+    depends_on:
+      - zookeeper
+
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus # Persistent volume for Prometheus data
+    ports:
+      - "9090:9090"
+    depends_on:
+      - kafka
+
+  grafana:
+    image: grafana/grafana
+    volumes:
+      - grafana_data:/var/lib/grafana # Persistent volume for Grafana data -> Add volume with http://prometheus:9090
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+
+volumes:
+  prometheus_data:
+  grafana_data:

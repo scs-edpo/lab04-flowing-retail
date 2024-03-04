@@ -157,7 +157,7 @@ It seems that with smaller batch sizes, the latency increases. This is expected 
 
 # E04 The risk of data loss due to offset misconfigurations
 
-## E01-01: Read from 0
+## E04-01: Read from 0
 
 ### Parameters and Process
 - **Lab:** 02 Part2 Eye-tracking main.
@@ -169,7 +169,7 @@ It seems that with smaller batch sizes, the latency increases. This is expected 
 ### Conclusion
 - The consumer can read records from the beginning of the topic, which can lead to duplicate processing of records if not handled properly.
 
-## E01-01: Read from 200
+## E04-02: Read from 200
 
 ### Parameters and Process
 - **Lab:** 02 Part2 Eye-tracking main.
@@ -181,3 +181,98 @@ It seems that with smaller batch sizes, the latency increases. This is expected 
 ### Conclusion
 - The consumer can read records from the specified offset, which can lead to not processing records that were sent before the consumer was started.
 - If the consumer is not aware of the offset, it can lead to data loss.
+
+## E04-03: Disable auto commit
+
+### Parameters and Process
+- **Lab:** 02 Part2 Eye-tracking main.
+- **Action:** Adjust the consumer properties to `enable.auto.commit=false` and keep `auto.offset.reset=earliest` and run the lab as provided.
+
+### Observations
+- The consumer reads the records from the last committed offset and continues from there.
+  [main] INFO org.apache.kafka.clients.consumer.internals.AbstractFetch - [Consumer clientId=consumer-grp1-1, groupId=grp1] Fetch position FetchPosition{offset=100, offsetEpoch=Optional.empty, currentLeader=LeaderAndEpoch{leader=Optional[localhost:9092 (id: 1001 rack: null)], epoch=0}} is out of range for partition click-events-0, resetting offset
+  [main] INFO org.apache.kafka.clients.consumer.internals.SubscriptionState - [Consumer clientId=consumer-grp1-1, groupId=grp1] Resetting offset for partition click-events-0 to position FetchPosition{offset=0, offsetEpoch=Optional.empty, currentLeader=LeaderAndEpoch{leader=Optional[localhost:9092 (id: 1001 rack: null)], epoch=0}}.
+  Received click-events - value: {eventID=0, timestamp=7530686035600, xPosition=970, yPosition=513, clickedElement=EL17}
+- stopped consumer at eventID: 20
+- started consumer again -> Starts at eventID: 0
+
+### Conclusion
+- Offset always starts from 0 so additional configuration like `enable.auto.commit=false` has no effect.
+
+## E04-03: Disable auto commit
+
+### Parameters and Process
+- **Lab:** 02 Part2 Eye-tracking main.
+- **Action:** Adjust the consumer properties to `enable.auto.commit=false` and **remove** `auto.offset.reset=earliest` and run the lab as provided.
+
+### Observations
+- The Consumer started at the offset where at the point of running it the producer was approximately at with the last record sent. At around eventID=11
+- Stopped the Consumer at eventID=27 (Producer)
+- Restarted the Consumer at eventID=48 (Producer)
+- Consumer started at eventID=48 
+- Let both the Consumer and the Producer run until the Producer reached eventID=100 and a few more.
+- Stopped the Consumer at eventID=106 (Consumer)
+- Restarted the Consumer at eventID=116 (Producer)
+- Consumer started at eventID=100
+- Stopped and Rerun the Consumer between eventID=258 and eventID=267 -> Consumer started at eventID=100
+
+### Conclusion
+- It seems that if the Consumer is not committing the offset automatically at the last processed record, it will start at the last sent record (from the Producer) when restarted. No reprocessing of previous records is done.
+- After 101 records were sent, the Consumer started at eventID=100 when restarted, even though the last sent record was higher than that.
+- This indicates that after 101 records were sent, the offset was committed as eventID=100.
+
+## E04-04: Disable auto commit and auto offset store
+
+### Parameters and Process
+- **Lab:** 02 Part2 Eye-tracking main.
+- **Action:** Adjust the consumer properties to `enable.auto.commit=false` and remove `auto.offset.reset=earliest` and `enable.auto.offset.store=false` and run the lab as provided.
+
+### Observations
+- Consumer starts at last committed record by the producer
+- Consumer stopped at eventID=106 and Restarted at eventID=116 (Producer) -> Consumer started at eventID=100
+
+### Conclusion
+- Seemingly the same behavior as in previous test.
+
+
+## E04-05: Disable auto commit and auto offset store and add auto commit interval
+
+### Parameters and Process
+- **Lab:** 02 Part2 Eye-tracking main.
+- **Action:** Adjust the consumer properties to `enable.auto.commit=false` and remove `auto.offset.reset=earliest` and `enable.auto.offset.store=false` and `auto.commit.interval.ms=1000` and run the lab as provided.
+
+### Observations
+- Consumer starts at last committed record by the producer
+- Consumer stopped at eventID=6 and Restarted at eventID=13 (Producer) -> Consumer started at eventID=13
+
+### Conclusion
+- Seemingly the same behavior as in previous test.
+- The auto.commit.interval.ms=1000 specifies the frequency in milliseconds at which the consumer attempts to commit offsets to Kafka when auto-commit is enabled. However, since enable.auto.commit is set to false, this setting does not have any effect.
+- `enable.auto.commit` provides a way to automatically commit offsets at regular intervals without manual intervention. `enable.auto.offset.store` determines whether the consumer should automatically store the offset of the last message it has fetched in preparation for committing it (either automatically or manually).
+- So `enable.auto.commit` is used to commit the offset at regular intervals (determined by `auto.commit.interval.ms`) to Kafka. 
+- And `enable.auto.offset.store` is used to store the offset of the last message fetched in preparation for committing it. This is an in-memory store.
+
+## E04-05: Enable auto commit and set auto commit interval
+- stop at eventID=16 and restart at eventID=26 -> Consumer started at eventID=26
+
+
+
+# E05 - Broker and Replication
+
+### Parameters and Process
+- **Lab:** 02 Part2 Eye-tracking main.
+- **Action:** Create a topic with a replication factor larger than the number of available brokers.
+
+### Observations
+When creating a topic with a replication factor larger than the number of available brokers, the following error is thrown:
+´´´
+- I have no name!@71ae6ea639ba:/$ KAFKA_OPTS="" /opt/bitnami/kafka/bin/kafka-topics.sh --create --topic test-topic-AAA --bootstrap-server localhost:9092 --partitions 2 --replication-factor 3
+- Error while executing topic command : Replication factor: 3 larger than available brokers: 1.
+- [2024-03-04 21:46:20,108] ERROR org.apache.kafka.common.errors.InvalidReplicationFactorException: Replication factor: 3 larger than available brokers: 1.
+- (org.apache.kafka.tools.TopicCommand)
+- I have no name!@71ae6ea639ba:/$ KAFKA_OPTS="" /opt/bitnami/kafka/bin/kafka-topics.sh --create --topic test-topic-AAA --bootstrap-server localhost:9092 --partitions 2 --replication-factor 1
+- Created topic test-topic-AAA.
+´´´
+
+### Conclusion
+This is because we only have one broker available. The replication factor cannot be larger than the number of available brokers since the data cannot be replicated to a non-existent broker.
