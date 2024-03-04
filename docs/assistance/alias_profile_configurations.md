@@ -70,3 +70,13 @@ For Windows, you can set up your PowerShell Profile as outlined below to create 
     ```bash
     kafka-consumer -topic helloworld
     ```
+## Additional Considerations
+
+### JMX Exporter blocks port for Kafka Console
+- When using the JMX exporter, configured through docker-compose.yml with KAFKA_OPTS, the port for the Kafka Console is blocked even if changing the port for the JMX exporter.
+- Workaround: set `KAFKA_OPTS=""` when executing a java command like: 
+  - `docker-compose exec kafka bash -c "KAFKA_OPTS='' /opt/bitnami/kafka/bin/kafka-topics.sh --list --bootstrap-server localhost:9092"`
+- OR
+  - `docker exec -it docker-kafka-1 bash`
+  - `KAFKA_OPTS="" /opt/bitnami/kafka/bin/kafka-topics.sh --list --bootstrap-server localhost:9092`
+If JMX exporter will be used it, Alias-configurations for the Kafka commands should be updated to include the `KAFKA_OPTS=""` prefix.
