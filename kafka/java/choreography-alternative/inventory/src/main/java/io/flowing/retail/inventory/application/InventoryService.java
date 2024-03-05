@@ -3,13 +3,19 @@ package io.flowing.retail.inventory.application;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import io.flowing.retail.inventory.domain.*;
+import io.flowing.retail.inventory.messages.Message;
+import io.flowing.retail.inventory.messages.MessageSender;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import io.flowing.retail.inventory.domain.Item;
-import io.flowing.retail.inventory.domain.PickOrder;
 
 @Component
 public class InventoryService {
+
+  Inventory inventory = Inventory.getInstance();
+  ReservationRegistry reservationRegistry = ReservationRegistry.getInstance();
+  @Autowired
+  private MessageSender messageSender;
   
   /**
    * reserve goods on stock for a defined period of time
@@ -20,7 +26,17 @@ public class InventoryService {
    * @return if reservation could be done successfully
    */
   public boolean reserveGoods(List<Item> items, String reason, String refId, LocalDateTime expirationDate) {
-    // TODO: Implement
+    Reservation reservation = new Reservation(refId, reason, items, expirationDate);
+    reservationRegistry.addReservation(reservation);
+    try {
+      for (Item item: items) {
+        inventory.decreaseArticleCount(item);
+      }
+      publishInventoryEvent(items, false);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    System.out.println("Reservation created");
     return true;
   }
 
@@ -47,7 +63,19 @@ public class InventoryService {
    * New goods are arrived and inventory is increased
    */
   public void topUpInventory(String articleId, int amount) {
-    // TODO: Implement
+    Item item = new Item()
+            .setAmount(amount)
+            .setArticleId(articleId);
+    inventory.topUpInventory(item);
+
+    Message<Item> m = new Message<>("InventoryToppedUp", item);
+    messageSender.send(m);
+  }
+
+  private void publishInventoryEvent (List<Item> items, boolean increase) {
+    String type = increase ? "InventoryIncreaseEvent" : "InventoryDecreaseEvent";
+    Message<List<Item>> m = new Message<>(type, items);
+    messageSender.send(m);
   }
 
 }

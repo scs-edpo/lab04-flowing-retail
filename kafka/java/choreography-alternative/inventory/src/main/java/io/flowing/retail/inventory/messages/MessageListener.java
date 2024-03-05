@@ -1,7 +1,10 @@
 package io.flowing.retail.inventory.messages;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -53,6 +56,16 @@ public class MessageListener {
                       "GoodsFetchedEvent", //
                       message.getTraceid(), //
                       payload));
+    }
+
+    if ("OrderPlacedEvent".equals(messageType)) {
+      Message<JsonNode> message = objectMapper.readValue(messageJson, new TypeReference<Message<JsonNode>>() {});
+      System.out.println(messageJson);
+      ObjectNode payload = (ObjectNode) message.getData();
+      Item[] items = objectMapper.treeToValue(payload.get("items"), Item[].class);
+      String orderId = objectMapper.treeToValue(payload.get("orderId"), String.class);
+
+      inventoryService.reserveGoods(Arrays.asList(items), "order placed", orderId, LocalDateTime.now().plusMinutes(2));
     }
   }
 
