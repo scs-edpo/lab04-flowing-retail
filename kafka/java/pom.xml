@@ -9,16 +9,10 @@
 
 	<modules>
 		<module>checkout</module>
-		<module>order-camunda</module>
-		<module>order-zeebe</module>
 		<module>payment</module>
-		<module>payment-camunda</module>
 		<module>inventory</module>
 		<module>shipping</module>
-
 		<module>choreography-alternative</module>
-		<module>camunda-optimize-ingest</module>
-
 		<module>monitor</module>
 	</modules>
 
