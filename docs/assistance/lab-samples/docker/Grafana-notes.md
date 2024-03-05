@@ -1,0 +1,6 @@
+- understand labels
+    - https://kafka.apache.org/documentation/#monitoring
+    - https://zookeeper.apache.org/doc/current/zookeeperJMX.html
+    - https://www.datadoghq.com/blog/monitoring-kafka-performance-metrics/#metric-to-watch-underreplicatedpartitions
+    - https://support.serverdensity.com/hc/en-us/articles/360001083446-Monitoring-Kafka
+    - https://access.redhat.com/documentation/de-de/red_hat_amq/7.2/html/using_amq_streams_on_red_hat_enterprise_linux_rhel/monitoring-str

@@ -3,11 +3,13 @@
 ## Course Information
 
 - **Course:** Event-driven and Process-oriented Architectures FS2024
-- **Instructors:** B. Weber, R. Seiger, A. Abbad-Andaloussi]()
+- **Instructors:** B. Weber, R. Seiger, A. Abbad-Andaloussi
 
 ## Deadline
 
-- **Submission Date:** 05.03.2024; 23:59 CET# E01 - Outage of Zookeeper
+- **Submission Date:** 05.03.2024; 23:59
+ 
+# E01 - Outage of Zookeeper
 
 ## E01-01: During Runtime
 
@@ -148,12 +150,50 @@ It seems that with smaller batch sizes, the latency increases. This is expected 
 
 # E03 - Setup of prometheus and grafana
 
-- understand labels
-  - https://kafka.apache.org/documentation/#monitoring
-  - https://zookeeper.apache.org/doc/current/zookeeperJMX.html
-  - https://www.datadoghq.com/blog/monitoring-kafka-performance-metrics/#metric-to-watch-underreplicatedpartitions
-  - https://support.serverdensity.com/hc/en-us/articles/360001083446-Monitoring-Kafka
-  - https://access.redhat.com/documentation/de-de/red_hat_amq/7.2/html/using_amq_streams_on_red_hat_enterprise_linux_rhel/monitoring-str
+## Actions
+Given the experiments require to keep track of metrics such as latency and throughput, we decided to investigate dedicated monitoring tools.
+Research on the topic led to Grafana and Prometheus as popular and for our purposes freely available tools.
+The setup of both tools was done using Docker containers:
+````yaml
+prometheus:
+  image: prom/prometheus
+  volumes:
+  - ./prometheus.yml:/etc/prometheus/prometheus.yml
+  - prometheus_data:/prometheus # Persistent volume for Prometheus data
+  ports:
+  - "9090:9090"
+  depends_on:
+  - kafka
+
+grafana:
+  image: grafana/grafana
+  volumes:
+  - grafana_data:/var/lib/grafana # Persistent volume for Grafana data
+  ports:
+  - "3000:3000"
+  depends_on:
+  - prometheus
+
+volumes:
+  prometheus_data:
+  grafana_data:
+````
+
+The Mbeans of Kafka and Zookeeper were then exposed to Prometheus by mounting the JMX exporter jar into the Kafka and Zookeeper containers. 
+This required the following changes to the Kafka and Zookeeper containers:
+````yaml
+KAFKA_OPTS: "-javaagent:/opt/bitnami/kafka/jmx_prometheus_javaagent-0.20.0.jar=7203:/opt/bitnami/kafka/config.yml"
+volumes:
+  - ./jmx_prometheus_javaagent-0.20.0.jar:/opt/bitnami/kafka/jmx_prometheus_javaagent-0.20.0.jar
+  - ./config.yml:/opt/bitnami/kafka/config.yml
+````
+
+## Observations
+A Grafana dashboard can be created to visualize the metrics. This however requires quite some effort to set up.
+Pre-built dashboards are available but the metrics need to be mapped to the correct labels.
+Lastly, interpreting the metrics and understanding the labels can be challenging.
+
+
 
 # E04 The risk of data loss due to offset misconfigurations
 
@@ -190,16 +230,19 @@ It seems that with smaller batch sizes, the latency increases. This is expected 
 
 ### Observations
 - The consumer reads the records from the last committed offset and continues from there.
-  [main] INFO org.apache.kafka.clients.consumer.internals.AbstractFetch - [Consumer clientId=consumer-grp1-1, groupId=grp1] Fetch position FetchPosition{offset=100, offsetEpoch=Optional.empty, currentLeader=LeaderAndEpoch{leader=Optional[localhost:9092 (id: 1001 rack: null)], epoch=0}} is out of range for partition click-events-0, resetting offset
-  [main] INFO org.apache.kafka.clients.consumer.internals.SubscriptionState - [Consumer clientId=consumer-grp1-1, groupId=grp1] Resetting offset for partition click-events-0 to position FetchPosition{offset=0, offsetEpoch=Optional.empty, currentLeader=LeaderAndEpoch{leader=Optional[localhost:9092 (id: 1001 rack: null)], epoch=0}}.
-  Received click-events - value: {eventID=0, timestamp=7530686035600, xPosition=970, yPosition=513, clickedElement=EL17}
+
+`[main] INFO org.apache.kafka.clients.consumer.internals.AbstractFetch - [Consumer clientId=consumer-grp1-1, groupId=grp1] Fetch position FetchPosition{offset=100, offsetEpoch=Optional.empty, currentLeader=LeaderAndEpoch{leader=Optional[localhost:9092 (id: 1001 rack: null)], epoch=0}} is out of range for partition click-events-0, resetting offset`
+
+`[main] INFO org.apache.kafka.clients.consumer.internals.SubscriptionState - [Consumer clientId=consumer-grp1-1, groupId=grp1] Resetting offset for partition click-events-0 to position FetchPosition{offset=0, offsetEpoch=Optional.empty, currentLeader=LeaderAndEpoch{leader=Optional[localhost:9092 (id: 1001 rack: null)], epoch=0}}.`
+
+`Received click-events - value: {eventID=0, timestamp=7530686035600, xPosition=970, yPosition=513, clickedElement=EL17}`
 - stopped consumer at eventID: 20
 - started consumer again -> Starts at eventID: 0
 
 ### Conclusion
 - Offset always starts from 0 so additional configuration like `enable.auto.commit=false` has no effect.
 
-## E04-03: Disable auto commit
+## E04-04: Disable auto commit
 
 ### Parameters and Process
 - **Lab:** 02 Part2 Eye-tracking main.
@@ -221,7 +264,7 @@ It seems that with smaller batch sizes, the latency increases. This is expected 
 - After 101 records were sent, the Consumer started at eventID=100 when restarted, even though the last sent record was higher than that.
 - This indicates that after 101 records were sent, the offset was committed as eventID=100.
 
-## E04-04: Disable auto commit and auto offset store
+## E04-05: Disable auto commit and auto offset store
 
 ### Parameters and Process
 - **Lab:** 02 Part2 Eye-tracking main.
@@ -235,7 +278,7 @@ It seems that with smaller batch sizes, the latency increases. This is expected 
 - Seemingly the same behavior as in previous test.
 
 
-## E04-05: Disable auto commit and auto offset store and add auto commit interval
+## E04-06: Disable auto commit and auto offset store and add auto commit interval
 
 ### Parameters and Process
 - **Lab:** 02 Part2 Eye-tracking main.
@@ -252,7 +295,7 @@ It seems that with smaller batch sizes, the latency increases. This is expected 
 - So `enable.auto.commit` is used to commit the offset at regular intervals (determined by `auto.commit.interval.ms`) to Kafka. 
 - And `enable.auto.offset.store` is used to store the offset of the last message fetched in preparation for committing it. This is an in-memory store.
 
-## E04-05: Enable auto commit and set auto commit interval
+## E04-07: Enable auto commit and set auto commit interval
 - stop at eventID=16 and restart at eventID=26 -> Consumer started at eventID=26
 
 
@@ -265,14 +308,54 @@ It seems that with smaller batch sizes, the latency increases. This is expected 
 
 ### Observations
 When creating a topic with a replication factor larger than the number of available brokers, the following error is thrown:
-´´´
+````
 - I have no name!@71ae6ea639ba:/$ KAFKA_OPTS="" /opt/bitnami/kafka/bin/kafka-topics.sh --create --topic test-topic-AAA --bootstrap-server localhost:9092 --partitions 2 --replication-factor 3
 - Error while executing topic command : Replication factor: 3 larger than available brokers: 1.
 - [2024-03-04 21:46:20,108] ERROR org.apache.kafka.common.errors.InvalidReplicationFactorException: Replication factor: 3 larger than available brokers: 1.
 - (org.apache.kafka.tools.TopicCommand)
 - I have no name!@71ae6ea639ba:/$ KAFKA_OPTS="" /opt/bitnami/kafka/bin/kafka-topics.sh --create --topic test-topic-AAA --bootstrap-server localhost:9092 --partitions 2 --replication-factor 1
 - Created topic test-topic-AAA.
-´´´
+````
 
 ### Conclusion
 This is because we only have one broker available. The replication factor cannot be larger than the number of available brokers since the data cannot be replicated to a non-existent broker.
+
+
+# E05 - Consumer lag
+
+### Parameters and Process
+- **Lab:** 02 Part2 Eye-tracking main.
+- **Action:** Add `Thread.sleep(1000);` into the polling-loop of the consumer and run the lab as provided.
+
+### Observations
+- Consumer only processed gaze-events from partition 0 at first
+- Encountered following logs:
+````
+[kafka-coordinator-heartbeat-thread | grp1] INFO org.apache.kafka.clients.Metadata - [Consumer clientId=consumer-grp1-1, groupId=grp1] Resetting the last seen epoch of partition click-events-0 to 0 since the associated topicId changed from XIAyepBTQiW120tzzrejVg to 7tTWV5PlSbi7Sp1-1wKuiw
+consumer poll timeout has expired. This means the time between subsequent calls to poll() was longer than the configured max.poll.interval.ms
+Member consumer-grp1-1-8ad2817e-5950-4d40-80a4-e7b5cc3670a7 sending LeaveGroup request to coordinator localhost:9092 (id: 2147482646 rack: null) due to consumer poll timeout has expired.
+Resetting generation and member id due to: consumer pro-actively leaving the group
+Request joining group due to: consumer pro-actively leaving the group
+````
+
+- After all records of partition 0 were processed, the consumer started processing records from partition 1
+- Encountered following logs:
+````
+Failing OffsetCommit request since the consumer is not part of an active group
+Asynchronous auto-commit of offsets failed
+Giving away all assigned partitions as lost since generation/memberID has been reset
+Lost previously assigned partitions click-events-0, gaze-events-0, gaze-events-1
+Resetting offset for partition gaze-events-0 to position FetchPosition{offset=0, offsetEpoch=Optional.empty,
+Resetting offset for partition gaze-events-1 to position FetchPosition{offset=0, offsetEpoch=Optional.empty,
+Resetting offset for partition click-events-0 to position FetchPosition{offset=0, offsetEpoch=Optional.empty
+````
+
+- Consumer starts processing records from partition 0 at offset 0 again
+- Click-events haven't been consumed yet at all.
+
+- The above situation occured again and consumer started processing records from partition 0 at offset 0 again.
+
+### Conclusion
+- The consumer lagged behind the producer significatly.
+- Given the property of the conusmer `auto.offset.reset= earliest` if a reset of the consumer group occurs, the consumer will start from the beginning of the topic.
+- Processing one partition at a time points towards an attempted rebalance where ideally another consumer would take care of the other partition.
