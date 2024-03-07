@@ -11,6 +11,7 @@
 		<module>payment</module>
 		<module>inventory</module>
 		<module>shipping</module>
+		<module>mailing</module>
 		<!--
 		<module>zeebe-monitor</module>
 		-->
