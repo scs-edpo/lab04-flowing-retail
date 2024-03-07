@@ -24,7 +24,7 @@ This exercise focuses on learning the integration of Apache Kafka with the Sprin
 ### Suggestions for Software Project
 
 - Implemented EDA patterns from Lecture 2, including:
-  - Event notification for the Flowing Retail example.
+- Event notification for the Flowing Retail example.
 
 ### Software Project Expectations
 
@@ -37,4 +37,5 @@ This exercise focuses on learning the integration of Apache Kafka with the Sprin
 ### Feedback
 
 - For individual feedback, approached tutors as advised.
-
+//TODO provide exact pointers to the code in the Readme on class level: similar to level of details in the labs. Link to the readme in the report.
+- in the readme provide exact steps to run the code. call this endpoint with this parameters this will happen. for all fucntions we add.

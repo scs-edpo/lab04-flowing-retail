@@ -10,7 +10,7 @@
 - **Submission Date:** 05.03.2024; 23:59
  
 # E01 - Outage of Zookeeper
-
+//TODO outage of zookeeper and then what hapens if producer gets out but new one is waiting.
 ## E01-01: During Runtime
 
 ### Parameters and Process
@@ -70,7 +70,7 @@
 
 
 # E02 - Impact of Load and Batch Size on Processing Latency 
-
+//TODO test the linger.ms effect
 ## E02-01: ...
 
 ### Parameters and Process
@@ -208,7 +208,7 @@ Lastly, interpreting the metrics and understanding the labels can be challenging
 
 ### Conclusion
 - The consumer can read records from the beginning of the topic, which can lead to duplicate processing of records if not handled properly.
-
+//TODO elaborate on this, why is that a problem? explicitly mention that due to offset earliest it will reread all records from the beginning of the topic.
 ## E04-02: Read from 200
 
 ### Parameters and Process
@@ -221,7 +221,7 @@ Lastly, interpreting the metrics and understanding the labels can be challenging
 ### Conclusion
 - The consumer can read records from the specified offset, which can lead to not processing records that were sent before the consumer was started.
 - If the consumer is not aware of the offset, it can lead to data loss.
-
+//TODO not true since the consumer is explicitly aware of the offset of 200.
 ## E04-03: Disable auto commit
 
 ### Parameters and Process
@@ -359,3 +359,6 @@ Resetting offset for partition click-events-0 to position FetchPosition{offset=0
 - The consumer lagged behind the producer significatly.
 - Given the property of the conusmer `auto.offset.reset= earliest` if a reset of the consumer group occurs, the consumer will start from the beginning of the topic.
 - Processing one partition at a time points towards an attempted rebalance where ideally another consumer would take care of the other partition.
+- 
+- //TODO test wether consumer lag has an effect on data loss. yes if the retention is short.
+- data is within kafka, this no data loss if the consumer just can t consume it.
