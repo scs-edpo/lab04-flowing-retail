@@ -14,8 +14,6 @@ public class MessageListener {
 
   @Autowired
   private MessageSender messageSender;
-
-  @Autowired
   private ProcessEngine camunda;
 
   @Autowired

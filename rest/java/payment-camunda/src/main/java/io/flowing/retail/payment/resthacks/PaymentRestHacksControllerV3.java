@@ -29,7 +29,6 @@ import com.netflix.hystrix.HystrixCommandGroupKey;
 @RestController
 public class PaymentRestHacksControllerV3 {
 
-  @Autowired
   private ProcessEngine camunda;
 
   @PostConstruct

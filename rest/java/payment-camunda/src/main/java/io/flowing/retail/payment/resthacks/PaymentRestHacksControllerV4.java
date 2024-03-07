@@ -33,7 +33,6 @@ import io.flowing.retail.payment.resthacks.adapter.NotifySemaphorAdapter;
 @RestController
 public class PaymentRestHacksControllerV4 {
 
-  @Autowired
   private ProcessEngine camunda;
 
   @PostConstruct

@@ -1,7 +1,6 @@
 package io.flowing.retail.order.messages;
 
 import java.io.IOException;
-import java.util.Collections;
 
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.spin.plugin.variable.SpinValues;
@@ -25,8 +24,6 @@ public class MessageListener {
   
   @Autowired
   private OrderRepository repository;
-  
-  @Autowired
   private ProcessEngine camunda;
 
   @Autowired

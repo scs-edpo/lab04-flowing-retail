@@ -42,8 +42,7 @@ public class PaymentRestHacksControllerV3b {
     response.setStatus(HttpServletResponse.SC_ACCEPTED);    
     return "{\"status\":\"pending\", \"traceId\": \"" + traceId + "\"}";
   }
-  
-  @Autowired
+
   private ProcessEngine camunda;
 
   @PostConstruct

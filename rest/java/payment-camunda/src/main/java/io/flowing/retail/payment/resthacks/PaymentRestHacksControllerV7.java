@@ -25,7 +25,6 @@ import io.flowing.retail.payment.resthacks.adapter.NotifySemaphorAdapter;
 @RestController
 public class PaymentRestHacksControllerV7 {
 
-  @Autowired
   private ProcessEngine camunda;
 
   @RequestMapping(path = "/payment/v7", method = PUT)
