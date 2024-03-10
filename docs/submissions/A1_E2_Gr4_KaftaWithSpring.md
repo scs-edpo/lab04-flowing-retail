@@ -3,11 +3,12 @@
 ## Course Information
 
 - **Course:** Event-driven and Process-oriented Architectures FS2024
-- **Instructors:** B. Weber, R. Seiger, A. Abbad-Andaloussi]()
+- **Instructors:** B. Weber, R. Seiger, A. Abbad-Andaloussi
 
 ## Deadline
 
 - **Submission Date:** 05.03.2024; 23:59 CET
+- **Updated Document based on Feedback:** 10.03.2024; 20:00 CET
 
 # Exercise 02: Kafka with Spring
 
@@ -38,7 +39,10 @@ While the current implementation focuses on 'OrderCompletedEvent', the service i
 accommodate additional event types for notification in the future, further leveraging the benefits of our event-driven architecture.
 
 
+### Code
+The mailing service is located in [kafka/java/mailing](/kafka/java/mailing) directory.
 
+The [README.md](/kafka/java/mailing/README.md) file provides detailed description of implementation.
 
 
 

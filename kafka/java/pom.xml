@@ -14,7 +14,6 @@
 		<module>shipping</module>
 		<module>choreography-alternative</module>
 		<module>monitor</module>
-		<module>mailing</module>
 	</modules>
 
 	<build>

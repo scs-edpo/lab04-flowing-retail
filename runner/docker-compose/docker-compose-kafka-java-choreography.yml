@@ -97,7 +97,7 @@ services:
 
   mailing:
     build:
-      context: ../../kafka/java/mailing
+      context: ../../kafka/java/choreography-alternative/mailing
       dockerfile: Dockerfile
     networks:
       - flowing
