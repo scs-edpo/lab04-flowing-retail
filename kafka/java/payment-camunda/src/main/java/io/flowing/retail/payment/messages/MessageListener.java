@@ -1,8 +1,8 @@
 package io.flowing.retail.payment.messages;
 
+import org.camunda.bpm.engine.RuntimeService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.camunda.bpm.engine.ProcessEngine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.handler.annotation.Header;
@@ -14,7 +14,9 @@ public class MessageListener {
 
   @Autowired
   private MessageSender messageSender;
-  private ProcessEngine camunda;
+
+  @Autowired
+  private RuntimeService runtimeService;
 
   @Autowired
   private ObjectMapper objectMapper;
@@ -32,7 +34,7 @@ public class MessageListener {
 
     System.out.println("Retrieve payment: " + retrievePaymentCommand.getAmount() + " for " + retrievePaymentCommand.getRefId());
 
-    camunda.getRuntimeService().createMessageCorrelation(message.getType()) //
+    runtimeService.createMessageCorrelation(message.getType()) //
             .processInstanceBusinessKey(message.getTraceid())
             .setVariable("amount", retrievePaymentCommand.getAmount()) //
             .setVariable("remainingAmount", retrievePaymentCommand.getAmount()) //
