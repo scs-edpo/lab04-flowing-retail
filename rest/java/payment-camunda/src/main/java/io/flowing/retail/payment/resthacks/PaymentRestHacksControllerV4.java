@@ -9,7 +9,8 @@ import java.util.concurrent.TimeUnit;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletResponse;
 
-import org.camunda.bpm.engine.ProcessEngine;
+import org.camunda.bpm.engine.RepositoryService;
+import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
@@ -33,17 +34,22 @@ import io.flowing.retail.payment.resthacks.adapter.NotifySemaphorAdapter;
 @RestController
 public class PaymentRestHacksControllerV4 {
 
-  private ProcessEngine camunda;
+  @Autowired
+  private RuntimeService runtimeService;
+
+  @Autowired
+  private RepositoryService repositoryService;
 
   @PostConstruct
   public void createFlowDefinition() {
     BpmnModelInstance flow = Bpmn.createExecutableProcess("paymentV4") //
+            .camundaHistoryTimeToLive(1)
         .startEvent() //
         .serviceTask("stripe").camundaDelegateExpression("#{stripeAdapter2}") //
           .camundaAsyncBefore().camundaFailedJobRetryTimeCycle("R3/PT1M") //
         .endEvent().camundaExecutionListenerClass("start", NotifySemaphorAdapter.class).done();
 
-    camunda.getRepositoryService().createDeployment() //
+    repositoryService.createDeployment() //
         .addModelInstance("payment.bpmn", flow) //
         .deploy();
   }
@@ -92,7 +98,7 @@ public class PaymentRestHacksControllerV4 {
   }
 
   public ProcessInstance chargeCreditCard(String traceId, String customerId, long remainingAmount) {
-    return camunda.getRuntimeService() //
+    return runtimeService //
         .startProcessInstanceByKey("paymentV4", traceId,//
             Variables.putValue("amount", remainingAmount));
   }
