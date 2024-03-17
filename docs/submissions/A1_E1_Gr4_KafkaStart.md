@@ -67,18 +67,19 @@
 - The observations indicate that shutting down Zookeeper before running the system affects the connectivity and functionality of the producers and consumer, highlighting Zookeeper's critical role in initial system setup and maintenance. Zookeeper serves in managing the Kafka cluster, including broker health checks, leader election, and maintaining overall cluster stability.
 - The Kafka Container Logs indicate that the system is unable to establish a connection with the broker, which is a direct result of Zookeeper being down.
 - Topics were created previously
+- Additional monitoring shows that when the producer (examined with the click event test) is activated, consumer 1 is able to receive the events. However, upon initiation of consumer 2, it assumes control of the events that were formerly managed by consumer 1. Thus, for this scenario, it appears that only one consumer is capable of processing the events at any given time.
 
-
-# E02 - Impact of Load and Batch Size on Processing Latency 
-//TODO test the linger.ms effect
-## E02-01: ...
+# E02 - Impact of Load and Batch Size on Processing Latency
 
 ### Parameters and Process
 
 - **Lab:** 02 Part2 Eye-tracking main.
-- **Action:** Adjust the batch size in the clickStream-producer configuration: batch.size 
-  - default is 16384 bytes (16KB)
-  - set it to batch.size=65536 bytes (64KB) 
+- **Action:** Adjust the batch size and linger in the clickStream-producer configuration: 
+  - batch.size 
+    - default is 16384 bytes (16KB)
+    - set it to batch.size=65536 bytes (64KB)
+  - linger.ms
+    - set linger.ms=60000 (1 minute)
 
 - Measure the latency by capturing the time when the record is sent and when the acknowledgment is received. Adding below code snippets to the ClicksProducer and EyeTrackerProducer.
 ```java
@@ -146,7 +147,8 @@
 
 
 ### Conclusion
-It seems that with smaller batch sizes, the latency increases. This is expected as the producer has to send more requests to the broker, which increases the time it takes to send the data. The default batch size of 16KB seems to be a good balance between latency and throughput.
+It seems that with smaller batch sizes, the latency increases. With adding the property linger.ms, the latency did not increase or decrease significantly.
+This is expected as the producer has to send more requests to the broker, which increases the time it takes to send the data. The default batch size of 16KB seems to be a good balance between latency and throughput.
 
 # E03 - Setup of prometheus and grafana
 
@@ -207,8 +209,10 @@ Lastly, interpreting the metrics and understanding the labels can be challenging
 - The consumer reads all records from the beginning of the topic, including records that were sent before the consumer was started.
 
 ### Conclusion
-- The consumer can read records from the beginning of the topic, which can lead to duplicate processing of records if not handled properly.
-//TODO elaborate on this, why is that a problem? explicitly mention that due to offset earliest it will reread all records from the beginning of the topic.
+- The consumer can read records from the beginning of the topic, which can lead to duplicate processing of records if not handled properly. 
+This can become a problem if the application is not designed to handle duplicates. Which could cause data to be corrupted, inconsistent, ot incorrect. 
+- Specifically, if the consumer is set to read from the earliest offset (auto.offset.reset=earliest), and the consumer restarts or a new consumer joins the consumer group, it will begin reading from the earliest message in the log that is available on the broker. In practical terms, this means the consumer will process all messages from the start of the topic, which includes messages that may have already been processed prior to the restart.
+
 ## E04-02: Read from 200
 
 ### Parameters and Process
@@ -220,8 +224,8 @@ Lastly, interpreting the metrics and understanding the labels can be challenging
 
 ### Conclusion
 - The consumer can read records from the specified offset, which can lead to not processing records that were sent before the consumer was started.
-- If the consumer is not aware of the offset, it can lead to data loss.
-//TODO not true since the consumer is explicitly aware of the offset of 200.
+- Even though the customer is aware of the offset, if kafka can not hold the data for the consumer, the consumer will not be able to read the data.
+
 ## E04-03: Disable auto commit
 
 ### Parameters and Process
