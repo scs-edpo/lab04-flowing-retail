@@ -21,8 +21,9 @@ Here, you will find a brief overview of our progress, including major milestones
 [Release]()
 
 **@stefanmhsg**
-- Draft README.md file for the Mailing Service
-- Draft BPMN diagram
+- draft README.md file for the Mailing Service
+- draft BPMN diagram
+- review feedback changes
 
 
 **@luetzyas** 
