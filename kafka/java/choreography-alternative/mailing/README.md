@@ -4,7 +4,7 @@
 
 The service is integrated with the `flowing-retail choreography-alternative` application. 
 
-In the docker-compose file, the service is defined as a separate service. It is started when 
+In the docker-compose file, the service is defined as a separate service.
 
 ```yaml
 mailing:
