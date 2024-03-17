@@ -21,7 +21,7 @@ Here, you will find a brief overview of our progress, including major milestones
 [Release]()
 
 **@stefanmhsg**
-
+- review enhanced feedback for E1 and E2
 
 
 **@luetzyas** 
@@ -30,7 +30,6 @@ Here, you will find a brief overview of our progress, including major milestones
   - what happens if 1 consumer is shut down
   - implement linger.ms to see if the latency behaviour changes
   - enhance conclusion for the experiment: Read from 0
-  - 
 
 ## Submission 05. March 2024
 
