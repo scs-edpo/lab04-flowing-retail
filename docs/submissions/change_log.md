@@ -19,7 +19,8 @@ Here, you will find a brief overview of our progress, including major milestones
 
 ## Submission 19. March 2024
 **@stefanmhsg**
-
+- Draft README.md file for the Mailing Service
+- Draft BPMN diagram
 
 
 **@luetzyas** 
