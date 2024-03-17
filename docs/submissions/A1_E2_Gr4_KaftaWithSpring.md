@@ -9,6 +9,7 @@
 
 - **Submission Date:** 05.03.2024; 23:59 CET
 - **Updated Document based on Feedback:** 10.03.2024; 20:00 CET
+- **[Work distribution](https://github.com/luetzyas/edpo-ss24-drop-shipping-a1-gr4/blob/master/docs/submissions/change_log.md)**
 
 # Exercise 02: Kafka with Spring
 
