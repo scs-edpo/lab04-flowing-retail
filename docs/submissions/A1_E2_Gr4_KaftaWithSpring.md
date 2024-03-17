@@ -41,6 +41,8 @@ accommodate additional event types for notification in the future, further lever
 
 
 ### Code
+[Release 1.0](https://github.com/luetzyas/edpo-ss24-drop-shipping-a1-gr4/releases/tag/EDPO_A1_E1_2)
+
 The mailing service is located in [kafka/java/mailing](/kafka/java/mailing) directory.
 
 The [README.md](/kafka/java/mailing/README.md) file provides detailed description of implementation.
