@@ -3,16 +3,16 @@ package io.flowing.retail.checkout.rest;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
 import java.util.UUID;
-import jakarta.json.Json;
 
-import jakarta.json.JsonArrayBuilder;
-import jakarta.json.JsonObjectBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.camunda.zeebe.client.ZeebeClient;
+import javax.json.Json;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonObjectBuilder;
 
 @RestController
 public class ShopRestController {
@@ -27,7 +27,7 @@ public class ShopRestController {
     
     JsonObjectBuilder item1 = Json.createObjectBuilder();
     item1.add("articleId", "123");
-    item1.add("amount", "1");
+    item1.add("amount", 1);
     orderItems.add(item1);    
 
     JsonObjectBuilder order = Json.createObjectBuilder();
