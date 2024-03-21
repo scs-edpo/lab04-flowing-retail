@@ -13,18 +13,17 @@ public class PaymentAdapter {
   @JobWorker(type="retrieve-payment-z")
   public void retrievePayment(JobClient client, ActivatedJob job) {
     try {
+
       Map<String, Object> variables = job.getVariablesAsMap();
       String traceId = (String) variables.get("traceId");
-      String refId = (String) variables.get("refId");
-      long amount = (Integer) variables.get("amount");
-      
-      System.out.println("retrieved payment " + amount + " for " + refId);
+
+      System.out.println("retrieved payment for "+traceId);
     } catch (Exception e) {
       throw new RuntimeException("Could not parse payload: " + e.getMessage(), e);
     }
 
     client.newCompleteCommand(job.getKey()).send()
-      .exceptionally( throwable -> { throw new RuntimeException("Could not complete job " + job, throwable); });
+            .exceptionally( throwable -> { throw new RuntimeException("Could not complete job " + job, throwable); });
   }
 
 }
