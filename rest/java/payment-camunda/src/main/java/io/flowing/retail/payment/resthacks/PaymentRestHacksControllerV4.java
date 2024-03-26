@@ -37,23 +37,6 @@ public class PaymentRestHacksControllerV4 {
   @Autowired
   private RuntimeService runtimeService;
 
-  @Autowired
-  private RepositoryService repositoryService;
-
-  @PostConstruct
-  public void createFlowDefinition() {
-    BpmnModelInstance flow = Bpmn.createExecutableProcess("paymentV4") //
-            .camundaHistoryTimeToLive(1)
-        .startEvent() //
-        .serviceTask("stripe").camundaDelegateExpression("#{stripeAdapter2}") //
-          .camundaAsyncBefore().camundaFailedJobRetryTimeCycle("R3/PT1M") //
-        .endEvent().camundaExecutionListenerClass("start", NotifySemaphorAdapter.class).done();
-
-    repositoryService.createDeployment() //
-        .addModelInstance("payment.bpmn", flow) //
-        .deploy();
-  }
-
   @Component("stripeAdapter2")
   public static class StripeAdapter implements JavaDelegate {
 

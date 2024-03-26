@@ -34,9 +34,6 @@ import io.flowing.retail.payment.resthacks.adapter.FailingOnLastRetry;
 public class PaymentRestHacksControllerV3b {
 
   @Autowired
-  private RepositoryService repositoryService;
-
-  @Autowired
   private RuntimeService runtimeService;
 
   @RequestMapping(path = "/payment/v3b", method = PUT)
@@ -51,26 +48,6 @@ public class PaymentRestHacksControllerV3b {
     return "{\"status\":\"pending\", \"traceId\": \"" + traceId + "\"}";
   }
 
-
-  @PostConstruct
-  public void createFlowDefinition() {
-    BpmnModelInstance flow = Bpmn.createExecutableProcess("paymentV3b") //
-            .camundaHistoryTimeToLive(1)
-        .startEvent() //
-        .serviceTask("stripe").camundaDelegateExpression("#{stripeAdapter3b}") //
-          .camundaAsyncBefore().camundaFailedJobRetryTimeCycle("R3/PT10S") // 
-          .boundaryEvent("noRetries").error("Error_NoRetries") //
-            .serviceTask("stripeCancel").camundaExpression("#{stripeCancelAdapter3b}") //
-            .camundaAsyncBefore().camundaFailedJobRetryTimeCycle("R3/PT10S") //
-            .endEvent()
-        .moveToActivity("stripe")
-        .endEvent().done();
-    
-    repositoryService.createDeployment() //
-      .addModelInstance("payment.bpmn", flow) //
-      .deploy();
-  }  
-  
   @Component("stripeAdapter3b")
   public static class StripeAdapter implements JavaDelegate {
 

@@ -37,29 +37,7 @@ import io.flowing.retail.payment.resthacks.adapter.NotifySemaphorAdapter;
 public class PaymentRestHacksControllerV4b {
 
   @Autowired
-  private RepositoryService repositoryService;
-
-  @Autowired
   private RuntimeService runtimeService;
-
-  @PostConstruct
-  public void createFlowDefinition() {
-    BpmnModelInstance flow = Bpmn.createExecutableProcess("paymentV4b") //
-            .camundaHistoryTimeToLive(1)
-        .startEvent() //
-        .serviceTask("stripe").camundaDelegateExpression("#{stripeAdapter4b}") //
-          .camundaAsyncBefore().camundaFailedJobRetryTimeCycle("R3/PT10S") // 
-          .boundaryEvent("noRetries").error("Error_NoRetries") //
-            .serviceTask("stripeCancel").camundaExpression("#{stripeCancelAdapter4b}") //
-            .camundaAsyncBefore().camundaFailedJobRetryTimeCycle("R3/PT10S") //
-            .endEvent()
-        .moveToActivity("stripe")
-        .endEvent().camundaExecutionListenerClass("start", NotifySemaphorAdapter.class).done();
-
-    repositoryService.createDeployment() //
-        .addModelInstance("payment.bpmn", flow) //
-        .deploy();
-  }
 
   @Component("stripeAdapter4b")
   public static class StripeAdapter implements JavaDelegate {

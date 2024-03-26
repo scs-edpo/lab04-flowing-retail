@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<definitions xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="definitions_08dd830a-b8e6-4f04-84b0-2b926ce0c424" targetNamespace="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL">
+  <process camunda:historyTimeToLive="1" id="paymentV4" isExecutable="true">
+    <startEvent id="startEvent_6ec3e87a-c49e-4181-8115-311bdb5e4cbd">
+      <outgoing>sequenceFlow_0ffeca39-030f-4902-bfef-d0a0069d0da2</outgoing>
+    </startEvent>
+    <serviceTask camunda:asyncBefore="true" camunda:delegateExpression="#{stripeAdapter2}" id="stripe" name="stripe">
+      <extensionElements>
+        <camunda:failedJobRetryTimeCycle>R3/PT1M</camunda:failedJobRetryTimeCycle>
+      </extensionElements>
+      <incoming>sequenceFlow_0ffeca39-030f-4902-bfef-d0a0069d0da2</incoming>
+      <outgoing>sequenceFlow_2d59ed18-7731-4815-b002-5270a200dd07</outgoing>
+    </serviceTask>
+    <sequenceFlow id="sequenceFlow_0ffeca39-030f-4902-bfef-d0a0069d0da2" sourceRef="startEvent_6ec3e87a-c49e-4181-8115-311bdb5e4cbd" targetRef="stripe"/>
+    <endEvent id="endEvent_04ea4105-641d-430f-be1b-ee71d6d6425e">
+      <extensionElements>
+        <camunda:executionListener class="io.flowing.retail.payment.resthacks.adapter.NotifySemaphorAdapter" event="start"/>
+      </extensionElements>
+      <incoming>sequenceFlow_2d59ed18-7731-4815-b002-5270a200dd07</incoming>
+    </endEvent>
+    <sequenceFlow id="sequenceFlow_2d59ed18-7731-4815-b002-5270a200dd07" sourceRef="stripe" targetRef="endEvent_04ea4105-641d-430f-be1b-ee71d6d6425e"/>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_485cebf9-b647-4df2-a085-c07996093bce">
+    <bpmndi:BPMNPlane bpmnElement="paymentV4" id="BPMNPlane_c4a3aa9f-9b1f-446c-a885-70cee5569e8d">
+      <bpmndi:BPMNShape bpmnElement="startEvent_6ec3e87a-c49e-4181-8115-311bdb5e4cbd" id="BPMNShape_1bde2358-ca9f-4099-bd0e-de15a38f3e3d">
+        <dc:Bounds height="36.0" width="36.0" x="100.0" y="100.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="stripe" id="BPMNShape_37ce554b-80bb-46dd-9242-4631fad6023b">
+        <dc:Bounds height="80.0" width="100.0" x="186.0" y="78.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow_0ffeca39-030f-4902-bfef-d0a0069d0da2" id="BPMNEdge_c183d13c-0183-463e-a73d-e6fce3aa3912">
+        <di:waypoint x="136.0" y="118.0"/>
+        <di:waypoint x="186.0" y="118.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape bpmnElement="endEvent_04ea4105-641d-430f-be1b-ee71d6d6425e" id="BPMNShape_bff09d55-7deb-4e5a-8ab2-5cdd5e1b08ee">
+        <dc:Bounds height="36.0" width="36.0" x="336.0" y="100.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow_2d59ed18-7731-4815-b002-5270a200dd07" id="BPMNEdge_19bc07cd-dc40-4559-ab8a-7ed355602e20">
+        <di:waypoint x="286.0" y="118.0"/>
+        <di:waypoint x="336.0" y="118.0"/>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
