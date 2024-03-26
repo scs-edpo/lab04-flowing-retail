@@ -32,13 +32,6 @@ services:
     depends_on:
       - zookeeper
 
-  docs:
-    image: flowingretail/docs
-    networks:
-      - flowing
-    ports:
-      - "8099:80"
-
   zeebe:
     image: camunda/zeebe:latest
     hostname: zeebe

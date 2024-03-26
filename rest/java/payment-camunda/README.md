@@ -10,7 +10,7 @@ This simple call-chain is great to demonstrate various important resilience patt
 
 # Concrete technologies/frameworks in this folder:
 
-* Java 8
+* Java 17
 * Spring Boot 3.1.x
 * Hystrix
 * Camunda 7.x

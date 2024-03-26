@@ -1,4 +1,4 @@
-package io.flowing.retail.payment.rest;
+package io.flowing.retail.paymentzeebe.rest;
 
 import io.camunda.zeebe.client.ZeebeClient;
 import io.camunda.zeebe.client.api.response.ActivatedJob;
@@ -40,7 +40,7 @@ public class PaymentRestHacksControllerV4b {
 
   @PostConstruct
   public void createFlowDefinition() {
-    BpmnModelInstance flow = Bpmn.createExecutableProcess("paymentV4") //
+    BpmnModelInstance flow = Bpmn.createExecutableProcess("paymentV4b") //
         .startEvent() //
         .serviceTask("stripe").zeebeJobType("charge-creditcard-v4") //
           .zeebeJobRetries("2") //
@@ -80,7 +80,7 @@ public class PaymentRestHacksControllerV4b {
 
   }
 
-  @RequestMapping(path = "/api/payment/v4b", method = PUT)
+  @RequestMapping(path = "/payment/v4b", method = PUT)
   @CircuitBreaker(name = "creditcard")
   public String retrievePayment(String retrievePaymentPayload, HttpServletResponse response) throws Exception {
     String traceId = UUID.randomUUID().toString();

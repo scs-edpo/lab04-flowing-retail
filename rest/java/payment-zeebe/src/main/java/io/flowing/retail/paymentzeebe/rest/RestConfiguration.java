@@ -1,4 +1,4 @@
-package io.flowing.retail.payment.rest;
+package io.flowing.retail.paymentzeebe.rest;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
