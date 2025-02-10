@@ -1,5 +1,3 @@
-version: "4"
-
 # Kafka like https://docs.confluent.io/current/installation/docker/docs/installation/single-node-client.html
 services:
   zookeeper:
