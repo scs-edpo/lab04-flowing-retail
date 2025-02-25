@@ -112,17 +112,6 @@ curl \
 -d '{}' \
 http://localhost:8100/api/payment/v1
 ```
-
-## Hint on using Camunda Enterprise Edition
-
-For Camunda there is an enterprise edition available with [https://camunda.com/products/cockpit/#/features](additional features in Cockpit) (the monitoring tool). It is quite handy to use this when playing around with the example. You can easily switch to use enterprise edition:
-
-* Get a trial license if you don't have a license yet: https://camunda.com/download/enterprise/
-* Java: Adjust Camunda version used in pom: [./pom.xml#L12](./pom.xml#L12), [./pom.xml#L50](./pom.xml#L50)
-* .NET: Download the Camunda enterprise version
-
-Note that you do not need the enterprise edition to run the examples, the community edition will also do fine. But because of less features you do not see historical workflow instances - and that means you do not see that much in Camunda Cockpit if everything runs smoothly.
-
 ## Using Camunda Cloud
 
 You can get a free hosted instance of Zeebe in Camunda Cloud at [https://camunda.io](https://camunda.io).

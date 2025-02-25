@@ -10,8 +10,8 @@ This simple call-chain is great to demonstrate various important resilience patt
 
 # Concrete technologies/frameworks in this folder:
 
-* Java 17
-* Spring Boot 3.1.x
+* Java
+* Spring Boot
 * Hystrix
 * Camunda 7.x
 
@@ -44,13 +44,3 @@ curl \
 -d '{}' \
 http://localhost:8100/payment/v1
 ```
-
-
-## Hint on using Camunda Enterprise Edition
-
-For Camunda there is an enterprise edition available with [additional features in Cockpit](https://camunda.com/products/cockpit/#/features) (the monitoring tool). It is quite handy to use this when playing around with the example. You can easily switch to use enterprise edition:
-
-* Get a trial license if you don't have a license yet: https://camunda.com/download/enterprise/
-* Adjust Camunda version used in pom: [./pom.xml#L12](./pom.xml#L12), [./pom.xml#L50](./pom.xml#L50)
-
-Note that you do not need the enterprise edition to run the examples, the community edition will also do fine. But because of less features you do not see historical workflow instances - and that means you do not see that much in Camunda Cockpit if everything runs smoothly.

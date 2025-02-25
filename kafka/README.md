@@ -19,9 +19,8 @@ You find the variations in the sub folders. Note that I do not yet have implemen
 
 ### Java
 
-* Java 17
-* Spring Boot 2.1.x
-* Spring Cloud Streams
+* Java
+* Spring Boot
 
 And of course
 * Apache Kafka
