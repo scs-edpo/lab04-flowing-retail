@@ -5,15 +5,10 @@
 	<artifactId>flowing-retail-kafka-payment-camunda</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<properties>
-		<maven.compiler.release>8</maven.compiler.release>
-		<spring.boot.version>3.2.2</spring.boot.version>
-		<camunda.version>7.20.0</camunda.version>
-		<!-- 
-		Adjust if you want to use Enterprise Edition of Camunda:
-		<camunda.version>7.12.3-ee</camunda.version>
-		Make sure you also switch to the ee webapp dependency below
-		-->
-		<camunda.spring.boot.version>7.20.0</camunda.spring.boot.version>
+		<maven.compiler.release>20</maven.compiler.release>
+		<spring.boot.version>3.4.2</spring.boot.version>
+		<camunda.version>7.22.0</camunda.version>
+		<camunda.spring.boot.version>7.22.0</camunda.spring.boot.version>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
@@ -46,11 +41,6 @@
 		<dependency>
 			<groupId>org.camunda.bpm.springboot</groupId>
 			<artifactId>camunda-bpm-spring-boot-starter-webapp</artifactId>
-	        <!-- 
-		    	Adjust if you want to use Enterprise Edition of Camunda:
-	        	<artifactId>camunda-bpm-spring-boot-starter-webapp-ee</artifactId>
-	    		Make sure you also use an EE version of Camunda - see above
-	        -->
 			<version>${camunda.spring.boot.version}</version>
 		</dependency>
 	    <dependency>
@@ -65,7 +55,7 @@
 		<dependency>
 			<groupId>org.springframework.kafka</groupId>
 			<artifactId>spring-kafka</artifactId>
-			<version>3.1.2</version>
+			<version>3.3.2</version>
 			<scope>compile</scope>
 		</dependency>
 	</dependencies>
@@ -100,7 +90,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.8.1</version>
+				<version>3.13.0</version>
 			</plugin>
     	</plugins>
     </build>

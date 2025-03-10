@@ -1,7 +1,8 @@
 package io.flowing.retail.order.domain;
 
-import javax.annotation.PostConstruct;
 
+
+import jakarta.annotation.PostConstruct;
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.model.bpmn.Bpmn;
 import org.springframework.beans.factory.annotation.Autowired;
