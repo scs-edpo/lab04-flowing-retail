@@ -4,15 +4,16 @@ import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
 import java.util.UUID;
 
+import jakarta.json.Json;
+import jakarta.json.JsonArrayBuilder;
+import jakarta.json.JsonObjectBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.camunda.zeebe.client.ZeebeClient;
-import javax.json.Json;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObjectBuilder;
+
 
 @RestController
 public class ShopRestController {

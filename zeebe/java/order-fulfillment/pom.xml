@@ -6,10 +6,9 @@
 	<version>0.0.1-SNAPSHOT</version>
 
 	<properties>
-		<maven.compiler.release>17</maven.compiler.release>
-		<spring.boot.version>3.2.2</spring.boot.version>
-		<spring.kafka.version>3.1.2</spring.kafka.version>
-		<zeebe.version>8.4.2</zeebe.version>
+		<maven.compiler.release>20</maven.compiler.release>
+		<spring.boot.version>3.4.2</spring.boot.version>
+		<spring.kafka.version>3.3.2</spring.kafka.version>
 	</properties>
 
 	<dependencyManagement>
@@ -29,9 +28,9 @@
 			<artifactId>spring-boot-starter</artifactId>
 		</dependency>
 		<dependency>
-		    <groupId>io.camunda</groupId>
-		    <artifactId>spring-zeebe-starter</artifactId>
-		    <version>${zeebe.version}</version>
+			<groupId>io.camunda</groupId>
+			<artifactId>spring-boot-starter-camunda-sdk</artifactId>
+			<version>8.7.0-alpha5-rc1</version>
 		</dependency>
 		<dependency>
 			<groupId>jakarta.xml.bind</groupId>
@@ -53,7 +52,7 @@
 		<dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-jpa</artifactId>
-			<version>3.2.3</version>
+			<version>3.4.3</version>
 		</dependency>
 
 		<dependency>
@@ -84,7 +83,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.8.1</version>
+				<version>3.13.0</version>
 				<configuration>
 					<compilerArgs>
 						<arg>-parameters</arg>

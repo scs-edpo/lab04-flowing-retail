@@ -5,10 +5,9 @@
 	<artifactId>flowing-retail-kafka-order-zeebe</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<properties>
-		<maven.compiler.release>8</maven.compiler.release>
-		<spring.boot.version>3.2.2</spring.boot.version>
-		<spring.kafka.version>3.1.2</spring.kafka.version>
-		<zeebe.version>8.4.2</zeebe.version>
+		<maven.compiler.release>20</maven.compiler.release>
+		<spring.boot.version>3.4.2</spring.boot.version>
+		<spring.kafka.version>3.3.2</spring.kafka.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -23,9 +22,9 @@
 			<version>${spring.kafka.version}</version>
 		</dependency>
 		<dependency>
-		    <groupId>io.camunda</groupId>
-		    <artifactId>spring-zeebe-starter</artifactId>
-		    <version>${zeebe.version}</version>
+			<groupId>io.camunda</groupId>
+			<artifactId>spring-boot-starter-camunda-sdk</artifactId>
+			<version>8.7.0-alpha5-rc1</version>
 		</dependency>
 		
 		<!-- Persistence for order entity itself -->
@@ -48,17 +47,17 @@
 		<dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-jpa</artifactId>
-			<version>3.2.3</version>
+			<version>3.4.3</version>
 		</dependency>
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
-			<version>2.2.220</version>
+			<version>2.3.232</version>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
-			<version>2.16.2</version>
+			<version>2.18.3</version>
 		</dependency>
 	</dependencies>
 	<build>
@@ -85,7 +84,7 @@
 			<plugin>
 			    <groupId>org.apache.maven.plugins</groupId>
 			    <artifactId>maven-compiler-plugin</artifactId>
-			    <version>3.8.1</version>
+			    <version>3.13.0</version>
 				<configuration>
 					<compilerArgs>
 						<arg>-parameters</arg>
