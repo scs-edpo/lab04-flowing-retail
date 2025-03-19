@@ -2,7 +2,7 @@
 
 This folder contains services that connect via REST. Currently, this is reduced to showcasing resilience patterns.
 
-A good background read is this InfoWorld article [3 common pitfalls of microservices integration—and how to avoid them](https://www.infoworld.com/article/3254777/application-development/3-common-pitfalls-of-microservices-integrationand-how-to-avoid-them.html)
+A good background read is this InfoWorld article [3 common pitfalls of microservices integration—and how to avoid them](https://blog.bernd-ruecker.com/3-common-pitfalls-in-microservice-integration-and-how-to-avoid-them-3f27a442cd07)
 
 # Sample service demonstrating stateful resilience patterns in a REST environment
 

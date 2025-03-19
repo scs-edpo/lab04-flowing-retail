@@ -5,8 +5,8 @@
 	<artifactId>flowing-retail-rest-stripe-fake</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<properties>
-		<maven.compiler.release>17</maven.compiler.release>
-		<spring.boot.version>3.1.1</spring.boot.version>
+		<maven.compiler.release>20</maven.compiler.release>
+		<spring.boot.version>3.4.2</spring.boot.version>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
