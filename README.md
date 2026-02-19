@@ -5,7 +5,7 @@ This sample application demonstrates a simple order fulfillment system, decompos
 ## Lab04 
 
 To run the **Choreography-based** version of the Flowing Retail project for lab04 you first need to be sure that all
-the relevant projects have been built at least once:
+the relevant projects have been **built** at least once:
 
 ```
   $ cd .\kafka\java\
