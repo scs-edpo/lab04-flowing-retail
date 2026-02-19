@@ -1,4 +1,4 @@
-FROM openjdk:20
+FROM eclipse-temurin:21-jdk
 VOLUME /tmp
 ADD target/*.jar app.jar
 ENV JAVA_OPTS=""
