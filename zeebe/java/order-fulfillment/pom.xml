@@ -30,7 +30,7 @@
 		<dependency>
 			<groupId>io.camunda</groupId>
 			<artifactId>spring-zeebe-starter</artifactId>
-			<version>8.4.2</version>
+			<version>8.5.17</version>
 		</dependency>
 		<dependency>
 			<groupId>jakarta.xml.bind</groupId>
@@ -72,6 +72,7 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>${spring.boot.version}</version>
 				<executions>
 					<execution>
 						<goals>

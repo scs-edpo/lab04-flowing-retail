@@ -16,6 +16,9 @@ services:
       - flowing
     ports:
       - "8092:8092"
+    depends_on:
+      - zeebe
+
 
   payment:
     build:
@@ -41,7 +44,7 @@ services:
       - flowing
 
   zeebe:
-    image: camunda/zeebe:8.4.2
+    image: camunda/zeebe:8.5.17
     hostname: zeebe
     environment:
       - ZEEBE_BROKER_EXPORTERS_ELASTICSEARCH_CLASSNAME=io.camunda.zeebe.exporter.ElasticsearchExporter
@@ -60,7 +63,7 @@ services:
       - elasticsearch
 
   operate:
-    image: camunda/operate:8.4.2
+    image: camunda/operate:8.5.17
     container_name: operate
     environment:
       - CAMUNDA_OPERATE_ZEEBE_GATEWAYADDRESS=zeebe:26500
@@ -75,7 +78,7 @@ services:
       - elasticsearch
 
   tasklist:
-    image: camunda/tasklist:8.4.2
+    image: camunda/tasklist:8.5.17
     container_name: tasklist
     environment:
       - CAMUNDA_TASKLIST_ZEEBE_GATEWAYADDRESS=zeebe:26500

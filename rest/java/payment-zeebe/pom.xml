@@ -9,7 +9,7 @@
 		<spring.boot.version>3.3.2</spring.boot.version>
 		<resilience4j.version>2.3.0</resilience4j.version>
 
-		<camunda.client.version>8.4.1</camunda.client.version>
+		<camunda.client.version>8.5.17</camunda.client.version>
 	</properties>
 	<dependencyManagement>
 		<dependencies>

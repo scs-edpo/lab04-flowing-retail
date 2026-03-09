@@ -114,10 +114,13 @@ public class PaymentRestHacksControllerV4b {
       .variables(variables)
       .send().join();
 
+    ZeebeWorkerValue workerValue = new ZeebeWorkerValue();
+    workerValue.setType("payment-response-v4-" + traceId);
+
     NotifySemaphorHandler notifySemaphorHandler = new NotifySemaphorHandler();
     io.camunda.zeebe.client.api.worker.JobWorker jobWorker = jobWorkerManager.openWorker(
             zeebe,
-            new ZeebeWorkerValue().setType("payment-response-v4-" + traceId),
+            workerValue,
             notifySemaphorHandler);
     notifySemaphorHandler.attachWorker(jobWorkerManager, jobWorker);
     // You can also find an example using Mono and Flux here:
