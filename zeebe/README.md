@@ -62,7 +62,7 @@ However, in reality a lot of projects struggle with operating messaging systems 
 
 Hence a lot of companies start to build home-grown *message hospitals* which require a lot of effort.
 
-This is where workflow automation technology can jump in with [good tooling supporting BizDevOps](BizDevOps). This leads a lot of customers to use this architecture and accepting a bit of smartness in the pipe. From my perspective this is absolutely OK, as long as the ownership and development/deployment lifecycle of a workflow model is clearly defined and assigned to a service (compare to [Architecture options to run a workflow engine](https://blog.bernd-ruecker.com/architecture-options-to-run-a-workflow-engine-6c2419902d91)).
+This is where workflow automation technology can jump in with good tooling supporting BizDevOps. This leads a lot of customers to use this architecture and accepting a bit of smartness in the pipe. From my perspective this is absolutely OK, as long as the ownership and development/deployment lifecycle of a workflow model is clearly defined and assigned to a service (compare to [Architecture options to run a workflow engine](https://blog.bernd-ruecker.com/architecture-options-to-run-a-workflow-engine-6c2419902d91)).
 
 So there are a couple of **advantages** of using Zeebe as middleware:
 
