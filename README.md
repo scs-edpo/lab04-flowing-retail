@@ -24,7 +24,7 @@ from the directory [runner/docker-compose](runner/docker-compose).
 To run the **Camunda-based** version of the Flowing Retail project for lab07 you need to execute
 
 ```
-  $ docker compose -f docker-compose-kafka-java-order-camunda.yml up
+  $ docker compose -f docker-compose-kafka-java-order-camunda.yml up  --build
 ```
 from the directory [runner/docker-compose](runner/docker-compose).
 
@@ -34,7 +34,7 @@ Similar to Lab04 make sure that all relevant java projects (in the docker file) 
 
 To run the **Zeebe-based** version of the Flowing retail project for lab11 you need to execute:
 ```
-  $ docker compose -f docker-compose-kafka-java-order-zeebe.yml up
+  $ docker compose -f docker-compose-kafka-java-order-zeebe.yml up  --build
 ```
 from the directory [runner/docker-compose](runner/docker-compose). This uses the [order-zeebe](kafka/java/order-zeebe) project for handling the order workflow.
 Hint: If you want to use the local Zeebe services you need to have the ''Self-managed local Zeebe'' configuration
@@ -47,7 +47,7 @@ Similar to Lab04 make sure that all relevant java projects (in the docker file) 
 
 To run the **Zeebe-based** version of the Flowing retail project for lab11 you need to execute:
 ```
-  $ docker compose -f docker-compose-java-order-zeebe.yml up
+  $ docker compose -f docker-compose-java-order-zeebe.yml up --build
 ```
 from the directory [runner/docker-compose](runner/docker-compose). This uses Zeebo with JobWorkers in the individual services for handling the order workflow.
 Check the [README](zeebe/README.md) for more details.
