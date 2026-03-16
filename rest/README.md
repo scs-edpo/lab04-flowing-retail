@@ -76,6 +76,15 @@ This example shows a successful approach taken by many customers: using the work
     * Workflow model: [payment5.bpmn](java/payment-camunda/src/main/resources/payment5.bpmn) (hint: use the free [Camunda Modeler](https://camunda.com/download/modeler/) to show this model graphically)
     * Worker in Java: [CustomerCreditWorker.java](java/payment-camunda/src/main/java/io/flowing/retail/payment/resthacks/worker/CustomerCreditWorker.java)
 
+Because this model uses Camunda **External Tasks**, you must run the worker in addition to Stripe Fake Server and Payment Service:
+
+* Worker path: `java/payment-camunda/src/main/java/io/flowing/retail/payment/resthacks/worker/CustomerCreditWorker.java`
+* Run from `rest/`:
+
+```
+mvn -f java/payment-camunda/pom.xml exec:java@customer-credit-worker
+```
+
 
 ## Business transactions using compensation
 
@@ -87,11 +96,23 @@ See [payment6.bpmn / Java](java/payment-camunda/src/main/resources/payment6.bpmn
 
 See [payment7.bpmn](java/payment-camunda/src/main/resources/payment7.bpmn) for an extended workflow including the no retries error in case the stripe fake service is down.
 
+These workflows also use Camunda **External Tasks** (`customer-credit` and `customer-credit-refund`), so the same worker must be running:
+
+* Worker path: `java/payment-camunda/src/main/java/io/flowing/retail/payment/resthacks/worker/CustomerCreditWorker.java`
+* Run from `rest/`:
+
+```
+mvn -f java/payment-camunda/pom.xml exec:java@customer-credit-worker
+```
+
+
+
 # How-to run
 
 You have to startup both services:
 * Stripe Fake Server
 * Payment Service
+
 
 This varies:
 * [How to run in Java](java/payment-camunda/README.md)

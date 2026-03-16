@@ -90,6 +90,17 @@
                 <configuration>                         
     				  <mainClass>io.flowing.retail.payment.PaymentRestApplication</mainClass>
                 </configuration>
+				<executions>
+					<execution>
+						<id>customer-credit-worker</id>
+						<goals>
+							<goal>java</goal>
+						</goals>
+						<configuration>
+							<mainClass>io.flowing.retail.payment.resthacks.worker.CustomerCreditWorker</mainClass>
+						</configuration>
+					</execution>
+				</executions>
              </plugin>
 			 <plugin>
 	            <groupId>org.springframework.boot</groupId>
