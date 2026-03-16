@@ -12,10 +12,9 @@ This sample REST (micro-)service effects payments in response to a PUT call. It 
 
 This simple call-chain is perfect for demonstrating important resilience patterns.
 
-The following technology choices are available for the code demos:
+The following technology choice is available for the code demos:
 
-* [**Java**](java/payment) + Spring, Hystrix, Camunda
-* [**Node.js**](nodejs/payment) + [Brakes](https://github.com/awolden/brakes), Zeebe on Camunda Cloud
+* [**Java**](java/payment-camunda) + Spring, Hystrix, Camunda
 
 # Storyline
 
@@ -25,15 +24,15 @@ Let's assume a scenario where the upstream credit card service still responds, b
 
 ![V1](../docs/resilience-patterns/v1.png)
 
-* Java: [PaymentRestHacksControllerV1.java](java/payment/src/main/java/io/flowing/retail/payment/port/resthacks/PaymentRestHacksControllerV1.java)
+* Java: [PaymentRestHacksControllerV1.java](java/payment-camunda/src/main/java/io/flowing/retail/payment/resthacks/PaymentRestHacksControllerV1.java)
 
 ## Fail fast
 
-A simple mitigation is to apply a **fail fast** pattern like [**circuit breaker**](https://martinfowler.com/bliki/CircuitBreaker.html). In this example I use [Netflix Hystrix](https://github.com/Netflix/Hystrix) (_and [Polly](https://github.com/App-vNext/Polly) for C# / [Brakes](https://github.com/awolden/brakes) for Node.js, which provide equivalent functionality_). If a service responds too slowly, the circuit breaker interrupts and the payment service gets a failure right away. This way you make sure the overall system is still responding, even if functionality degrades (meaning: we cannot charge credit cards).
+A simple mitigation is to apply a **fail fast** pattern like [**circuit breaker**](https://martinfowler.com/bliki/CircuitBreaker.html). In this example I use [Netflix Hystrix](https://github.com/Netflix/Hystrix). If a service responds too slowly, the circuit breaker interrupts and the payment service gets a failure right away. This way you make sure the overall system is still responding, even if functionality degrades (meaning: we cannot charge credit cards).
 
 ![V2](../docs/resilience-patterns/v2.png)
 
-* Java: [PaymentRestHacksControllerV2.java](java/payment/src/main/java/io/flowing/retail/payment/port/resthacks/PaymentRestHacksControllerV2.java#L41)
+* Java: [PaymentRestHacksControllerV2.java](java/payment-camunda/src/main/java/io/flowing/retail/payment/resthacks/PaymentRestHacksControllerV2.java)
 
 
 ## Fail fast is not enough
@@ -45,9 +44,9 @@ Failing fast is good, but it is not enough. Frequently, a retry after the credit
 In the example, I use the [Camunda workflow engine](http://camunda.com/) (or Zeebe in [Camunda Cloud](https://camunda.io)) to do the stateful retry reliably.
 
 * Java
-    * [PaymentRestHacksControllerV3.java](java/payment/src/main/java/io/flowing/retail/payment/port/resthacks/PaymentRestHacksControllerV3.java#L45)
+    * [PaymentRestHacksControllerV3.java](java/payment-camunda/src/main/java/io/flowing/retail/payment/resthacks/PaymentRestHacksControllerV3.java)
     * The workflow is created by Java DSL
-    * In PaymentRestHacksControllerV3b.java we add an Error Boundary Event and additional Service Task to cancel the transaction in case there are no retries left.
+    * In [PaymentRestHacksControllerV3b.java](java/payment-camunda/src/main/java/io/flowing/retail/payment/resthacks/PaymentRestHacksControllerV3b.java) we add an Error Boundary Event and additional Service Task to cancel the transaction in case there are no retries left.
 
 ## Keep synchronous responses
 
@@ -60,8 +59,8 @@ HTTP supports this via return codes: `200 OK` means "_all OK_", `202 ACCEPTED` m
 ![Sync vs. async](../docs/resilience-patterns/syncAsync.png)
 
 * Java
-    * [PaymentRestHacksControllerV4.java](java/payment/src/main/java/io/flowing/retail/payment/port/resthacks/PaymentRestHacksControllerV4.java#L83)
-    * In PaymentRestHacksControllerV4b.java we add an Error Boundary Event and additional Service Task to cancel the transaction in case there are no retries left.
+    * [PaymentRestHacksControllerV4.java](java/payment-camunda/src/main/java/io/flowing/retail/payment/resthacks/PaymentRestHacksControllerV4.java)
+    * In [PaymentRestHacksControllerV4b.java](java/payment-camunda/src/main/java/io/flowing/retail/payment/resthacks/PaymentRestHacksControllerV4b.java) we add an Error Boundary Event and additional Service Task to cancel the transaction in case there are no retries left.
 
 
 
@@ -74,8 +73,8 @@ This example shows a successful approach taken by many customers: using the work
 ![Microservices](../docs/resilience-patterns/v5.png)
 
 * Java
-    * Workflow model: [payment5.bpmn](java/payment/src/main/resources/payment5.bpmn) (hint: use the free [Camunda Modeler](https://camunda.com/download/modeler/) to show this model graphically)
-    * Worker in Java (alternative): [CustomerCreditWorker.java](java/payment/src/main/java/io/flowing/retail/payment/worker/CustomerCreditWorker.java)
+    * Workflow model: [payment5.bpmn](java/payment-camunda/src/main/resources/payment5.bpmn) (hint: use the free [Camunda Modeler](https://camunda.com/download/modeler/) to show this model graphically)
+    * Worker in Java: [CustomerCreditWorker.java](java/payment-camunda/src/main/java/io/flowing/retail/payment/resthacks/worker/CustomerCreditWorker.java)
 
 
 ## Business transactions using compensation
@@ -84,9 +83,9 @@ The last part of the example adds compensation to the game. In distributed syste
 
 ![Microservices](../docs/resilience-patterns/v6.png)
 
-See [payment6.bpmn / Java](java/payment/src/main/resources/payment6.bpmn) for the workflow
+See [payment6.bpmn / Java](java/payment-camunda/src/main/resources/payment6.bpmn) for the workflow
 
-See payment7.bpmn for an extended workflow including the no retries error in case the stripe fake service is down.
+See [payment7.bpmn](java/payment-camunda/src/main/resources/payment7.bpmn) for an extended workflow including the no retries error in case the stripe fake service is down.
 
 # How-to run
 

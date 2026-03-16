@@ -1,6 +1,6 @@
 # Java version of flowing-retail/rest
 
-This example demonstrates stateful resilience patterns in a REST environment. A payment (micro-)service can retrieve payments if called via REST. It requires an upstream REST service to charge credit cards.
+This example demonstrates **stateful resilience patterns** in a REST environment. A payment (micro-)service can retrieve payments if called via REST. It requires an upstream REST service to charge credit cards.
 
 ![REST callstack](../../../docs/resilience-patterns/situation.png)
 
