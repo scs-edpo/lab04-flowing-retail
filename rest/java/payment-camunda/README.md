@@ -23,6 +23,14 @@ First you have to startup the stripe fake server, as this handles the credit car
 mvn -f ../stripe-fake/ exec:java
 ```
 
+After startup, the stripe fake service expects a mode input:
+
+* `N` = Normal mode
+* `S` = Slow mode (adds random delay, up to 60 seconds)
+
+Type `S` or `N` in the same console where you started stripe fake and press Enter. You can switch between modes while it is running.
+
+
 Now you can run the payment service itself
 
 ```
