@@ -133,4 +133,22 @@ http://localhost:8100/api/payment/v1
 ### Using Camunda 8
 
 You can run the examples in the [payment-zeebe](java/payment-zeebe/) variant, using the Camunda Cloud credentials provided on
-Canvas (cf. Lecture 4) or using the Docker compose file for the local Zeebe infrastructure ([docker-compose-kafka-zeebe-infra.yml](../runner/docker-compose/docker-compose-kafka-zeebe-infra.yml)).
+Canvas (cf. Module Week 4) or using the Docker compose file for the local Zeebe infrastructure ([docker-compose-
+kafka-zeebe-infra.yml](../runner/docker-compose/docker-compose-kafka-zeebe-infra.yml)).
+
+Remember. before running, update [java/payment-zeebe/src/main/resources/application.properties](java/payment-zeebe/src/main/resources/application.properties) to match your target environment:
+
+**Local Zeebe (Docker)** — default, no changes needed:
+```properties
+zeebe.client.broker.gateway-address=127.0.0.1:26500
+zeebe.client.security.plaintext=true
+```
+
+**Camunda Cloud** — replace the above with your cluster credentials:
+```properties
+zeebe.client.cloud.region=******
+zeebe.client.cloud.clusterId=******
+zeebe.client.cloud.clientId=******
+zeebe.client.cloud.clientSecret=******
+
+```
