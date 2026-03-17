@@ -109,46 +109,16 @@ mvn -f java/payment-camunda/pom.xml exec:java@customer-credit-worker
 
 # How-to run
 
-You have to startup both services:
-* Stripe Fake Server
-* Payment Service
+Use the variant-specific guides:
 
-Check: [How to run in Java](java/payment-camunda/README.md)
+## Camunda 7
 
-Now the different versions of the payment service are available:
+* Run instructions: [java/payment-camunda/README.md](java/payment-camunda/README.md)
+* Supported payment versions: `v1`, `v2`, `v3`, `v3b`, `v4`, `v4b`, `v5`, `v6`, `v7`
 
-* http://localhost:8100/api/payment/v1
-* ...
-* http://localhost:8100/api/payment/v6
+## Camunda 8 / Zeebe
 
-You now can issue a PUT with an empty body:
+* Run instructions: [java/payment-zeebe/README.md](java/payment-zeebe/README.md)
+* Supported payment versions: `v1`, `v2`, `v3`, `v4`
 
-```
-curl \
--H "Content-Type: application/json" \
--X PUT \
--d '{}' \
-http://localhost:8100/api/payment/v1
-```
-### Using Camunda 8
-
-You can run the examples in the [payment-zeebe](java/payment-zeebe/) variant, using the Camunda Cloud credentials provided on
-Canvas (cf. Module Week 4) or using the Docker compose file for the local Zeebe infrastructure ([docker-compose-
-kafka-zeebe-infra.yml](../runner/docker-compose/docker-compose-kafka-zeebe-infra.yml)).
-
-Remember. before running, update [java/payment-zeebe/src/main/resources/application.properties](java/payment-zeebe/src/main/resources/application.properties) to match your target environment:
-
-**Local Zeebe (Docker)** — default, no changes needed:
-```properties
-zeebe.client.broker.gateway-address=127.0.0.1:26500
-zeebe.client.security.plaintext=true
-```
-
-**Camunda Cloud** — replace the above with your cluster credentials:
-```properties
-zeebe.client.cloud.region=******
-zeebe.client.cloud.clusterId=******
-zeebe.client.cloud.clientId=******
-zeebe.client.cloud.clientSecret=******
-
-```
+> Both variants run on port `8100`, so run one variant at a time.
