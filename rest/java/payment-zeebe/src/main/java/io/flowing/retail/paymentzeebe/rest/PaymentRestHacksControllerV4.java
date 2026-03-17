@@ -115,6 +115,8 @@ public class PaymentRestHacksControllerV4 {
 
     ZeebeWorkerValue workerValue = new ZeebeWorkerValue();
     workerValue.setType("payment-response-v4-" + traceId);
+    workerValue.setName("payment-response-v4-" + traceId);
+
 
     NotifySemaphorHandler notifySemaphorHandler = new NotifySemaphorHandler();
     io.camunda.zeebe.client.api.worker.JobWorker jobWorker = jobWorkerManager.openWorker(
