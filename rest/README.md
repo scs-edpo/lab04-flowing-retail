@@ -113,9 +113,7 @@ You have to startup both services:
 * Stripe Fake Server
 * Payment Service
 
-
-This varies:
-* [How to run in Java](java/payment-camunda/README.md)
+Check: [How to run in Java](java/payment-camunda/README.md)
 
 Now the different versions of the payment service are available:
 
@@ -132,6 +130,8 @@ curl \
 -d '{}' \
 http://localhost:8100/api/payment/v1
 ```
-## Using Camunda Cloud
+### Using Camunda 8
 
-You can get a free hosted instance of Zeebe in Camunda Cloud at [https://camunda.io](https://camunda.io).
+You can run the examples in the [payment-zeebe](java/payment-zeebe/) variant, using the Camunda Cloud credentials provided on
+Canvas (cf. Lecture 4) or using the Docker compose file for the local Zeebe infrastructure ([docker-compose-
+kafka-zeebe-infra.yml](../runner/docker-compose/docker-compose-kafka-zeebe-infra.yml)).
