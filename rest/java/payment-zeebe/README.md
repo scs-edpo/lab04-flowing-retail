@@ -17,9 +17,10 @@ This variant demonstrates **stateful resilience patterns** in a REST environment
 
 ## 1. Start the Stripe Fake Server
 
-Run from `rest/`:
+Run from `rest/` (build first, then run):
 
 ```
+mvn -f java/stripe-fake/ clean package
 mvn -f java/stripe-fake/ exec:java
 ```
 
@@ -59,9 +60,10 @@ zeebe.client.cloud.clientSecret=********
 
 ## 3. Start the Camunda 8 / Zeebe Payment Service
 
-Run from `rest/`:
+Run from `rest/` (build first, then run):
 
 ```
+mvn -f java/payment-zeebe clean package
 mvn -f java/payment-zeebe exec:java
 ```
 

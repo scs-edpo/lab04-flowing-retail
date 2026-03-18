@@ -17,9 +17,10 @@ This variant demonstrates **stateful resilience patterns** in a REST environment
 
 ## 1. Start the Stripe Fake Server
 
-Run from `rest/`:
+Run from `rest/` (build first, then run):
 
 ```
+mvn -f java/stripe-fake/ clean package
 mvn -f java/stripe-fake/ exec:java
 ```
 
@@ -30,9 +31,10 @@ After startup, choose the mode in the same terminal:
 
 ## 2. Start the Camunda 7 Payment Service
 
-Run from `rest/`:
+Run from `rest/` (build first, then run):
 
 ```
+mvn -f java/payment-camunda clean package
 mvn -f java/payment-camunda exec:java
 ```
 
@@ -42,7 +44,7 @@ For models that use Camunda **External Tasks** (e.g. asynchronous work distribut
 
 * Worker: `src/main/java/io/flowing/retail/payment/resthacks/worker/CustomerCreditWorker.java`
 
-Run from `rest/`:
+Run from `rest/` (make sure payment-camunda is already built):
 
 ```
 mvn -f java/payment-camunda exec:java@customer-credit-worker
